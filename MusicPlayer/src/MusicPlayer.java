@@ -8,7 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
+
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Mixer;
@@ -18,8 +21,7 @@ import javax.swing.event.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
-import java.awt.Dimension;
-import java.awt.Font;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -62,17 +64,21 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 			frame.setSize(new Dimension(1000,350));
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setResizable(false);
-			ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
-			frame.setIconImage(image.getImage());
+			try {
+				frame.setIconImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			text = new JLabel("Now playing:");
 			text.setBounds(500,0,400,70);
-			text.setFont(new Font("Chiller" , Font.TYPE1_FONT, 60));
+			text.setFont(loadFont("CHILLER.ttf" ,60 ,Font.TYPE1_FONT ));
 			text.setForeground(Color.black);
 			
 			
 			pauseButton = new JButton("pause");
-			pauseButton.setFont(new Font("Chiller" , Font.TYPE1_FONT, 30));
+			pauseButton.setFont(loadFont("CHILLER.ttf" ,30 ,Font.TYPE1_FONT ));
 			pauseButton.setForeground(new Color(192, 217, 235));
 			pauseButton.setFocusable(false);
 			pauseButton.setBounds(615,175,180,25);
@@ -81,7 +87,7 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 			pauseButton.addActionListener(this);
 			
 			playButton = new JButton("play");
-			playButton.setFont(new Font("Chiller" , Font.TYPE1_FONT, 30));
+			playButton.setFont(loadFont("CHILLER.ttf" ,30 ,Font.TYPE1_FONT ));
 			playButton.setForeground(new Color(192, 217, 235));
 			playButton.setFocusable(false);
 			playButton.setBounds(440,175,180,25);
@@ -90,7 +96,7 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 			playButton.addActionListener(this);
 			
 			bkdButton = new JButton("<<");
-			bkdButton.setFont(new Font("Chiller" , Font.TYPE1_FONT, 30));
+			bkdButton.setFont(loadFont("CHILLER.ttf" ,30 ,Font.TYPE1_FONT ));
 			bkdButton.setForeground(new Color(192, 217, 235));
 			bkdButton.setFocusable(false);
 			bkdButton.setBounds(310,150,125,50);
@@ -99,7 +105,7 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 			bkdButton.addActionListener(this);
 			
 			frdButton= new JButton(">>");
-			frdButton.setFont(new Font("Chiller" , Font.TYPE1_FONT, 30));
+			frdButton.setFont(loadFont("CHILLER.ttf" ,30 ,Font.TYPE1_FONT ));
 			frdButton.setForeground(new Color(192, 217, 235));
 			frdButton.setFocusable(false);
 			frdButton.setBounds(800,150,125,50);
@@ -163,7 +169,7 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 			label.setOpaque(false);
 			label.setText("  Volume:" +slider.getValue());
 			label.setBounds(542 , 286 , 110 ,20);
-			label.setFont(new Font("Forte",Font.TYPE1_FONT,18));
+			label.setFont(loadFont("CHILLER.ttf" ,25 ,Font.TYPE1_FONT ));
 			label.setForeground(new Color(2, 2, 24));
 			label.setVisible(false);
 			
@@ -233,7 +239,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 				saveFile(model.lastElement() , fileChooser.getSelectedFile());
 			}
 			else {
-				ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+				ImageIcon image = new ImageIcon();
+				try {
+					image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				String[] responses = {"No, you're awesome!", "Thank you" , "*blush*"};
 				JOptionPane.showOptionDialog(null, 
 						"You are awesome but this song already exists!", 
@@ -248,7 +260,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 		
 		if(e.getSource()==deleteButton) {
 			testPlay=0;
-			ImageIcon image = new ImageIcon("logo_EXTRA_mic.png");
+			ImageIcon image = new ImageIcon();
+			try {
+				image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			String[] responses = {"I'm suure!" , "Sorry! Didn't wanted that!"};
 			int answer = JOptionPane.showOptionDialog(null, 
 					"Heyy!\n Are you sure you wanna delete this song?", 
@@ -316,7 +334,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 									list.setSelectedIndex(list.getSelectedIndex()+1);
 									}
 								if(currProgBar==0 && model.getSize()==1) {
-									ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+									ImageIcon image = new ImageIcon();
+									try {
+										image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 									String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 									JOptionPane.showOptionDialog(null, 
 											"Heyy sweetie!\n Your song is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -340,7 +364,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 								}
 								if(currProgBar==0 && list.getSelectedIndex()==model.getSize()-1) {
 									list.setSelectedIndex(0);
-									ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+									ImageIcon image = new ImageIcon();
+									try {
+										image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 									String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 									JOptionPane.showOptionDialog(null, 
 											"Heyy sweetie!\n Your playlist is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -473,7 +503,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 								list.setSelectedIndex(list.getSelectedIndex()+1);
 								}
 							if(currProgBar==0 && model.getSize()==1) {
-								ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+								ImageIcon image = new ImageIcon();
+								try {
+									image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 								JOptionPane.showOptionDialog(null, 
 										"Heyy sweetie!\n Your song is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -497,7 +533,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 							}
 							if(currProgBar==0 && list.getSelectedIndex()==model.getSize()-1) {
 								list.setSelectedIndex(0);
-								ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+								ImageIcon image = new ImageIcon();
+								try {
+									image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 								JOptionPane.showOptionDialog(null, 
 										"Heyy sweetie!\n Your playlist is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -602,7 +644,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 							list.setSelectedIndex(list.getSelectedIndex()+1);
 							}
 						if(currProgBar==0 && model.getSize()==1) {
-							ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+							ImageIcon image = new ImageIcon();
+							try {
+								image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 							String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 							JOptionPane.showOptionDialog(null, 
 									"Heyy sweetie!\n Your song is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -626,7 +674,13 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
 						}
 						if(currProgBar==0 && list.getSelectedIndex()==model.getSize()-1) {
 							list.setSelectedIndex(0);
-							ImageIcon image = new ImageIcon("C:\\Users\\oneti\\eclipse-workspace\\MusicPlayer\\logo_EXTRA_mic.png");
+							ImageIcon image = new ImageIcon();
+							try {
+								image.setImage(ImageIO.read(getClass().getResourceAsStream("/images/logo_EXTRA_mic.png"))); 
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 							String[] responses = {"Thx bby <3 !" , "*blush <3*"};
 							JOptionPane.showOptionDialog(null, 
 									"Heyy sweetie!\n Your playlist is over :(,\n but don't worry, i replayed it for you :D !", 
@@ -924,6 +978,32 @@ public class MusicPlayer implements ChangeListener , ActionListener , MouseListe
         } catch (Exception e) {   
             JOptionPane.showMessageDialog(null,"Erro\n"+e);  
         }  
+    }
+	
+	private static Font loadFont(String fontName, float size, int style) {
+
+        InputStream openStream = MarqueePanel.class
+                .getResourceAsStream("/font/"
+                        + fontName);
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, openStream);
+            Font finalFont = font.deriveFont((float) size).deriveFont(style);
+            System.out.println("Loading font " + fontName + " " + finalFont);
+            return finalFont;
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (openStream != null) {
+                try {
+                    openStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 }
 

@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -31,7 +35,7 @@ public class MarqueePanel extends JPanel implements ActionListener {
 		}
 		this.s = sb+s+sb;
 		this.n = n;
-		l.setFont(new Font("Chiller" , Font.TYPE1_FONT, 30));
+		l.setFont(loadFont("CHILLER.ttf", 30 ,Font.TYPE1_FONT));
 		l.setForeground(new Color(126, 247, 140));
 		this.add(l);
 	}
@@ -51,5 +55,31 @@ public class MarqueePanel extends JPanel implements ActionListener {
 		}
 		l.setText(s.substring(index,index+n));
 	}
+	
+	private static Font loadFont(String fontName, float size, int style) {
+
+        InputStream openStream = MarqueePanel.class
+                .getResourceAsStream("/font/"
+                        + fontName);
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, openStream);
+            Font finalFont = font.deriveFont((float) size).deriveFont(style);
+            System.out.println("Loading font " + fontName + " " + finalFont);
+            return finalFont;
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (openStream != null) {
+                try {
+                    openStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 		
 }
